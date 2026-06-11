@@ -1,9 +1,9 @@
 
 function SummaryCard({ title, amount }) {
   return (
-    <div className="border p-6">
-        <h2>{title}</h2>
-        <p>{amount}</p>
+    <div className="border rounded-xl p-6 shadow-md flex-1">
+        <h3 className="text-gray-500 text-sm">{title}</h3>
+        <p className="text-2xl font-bold mt-2">${amount}</p>
     </div>
   )
 }
