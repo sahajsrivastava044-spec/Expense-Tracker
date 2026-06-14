@@ -1,21 +1,6 @@
 import SummaryCard from "../components/SummaryCard"
 import TransactionItem from "../components/TransactionItem";
 import {useState} from "react"; 
-const summaryData=[{
-  id: 1,
-  title: "Budget",
-  amount: 50000,
-},
-{
-  id: 2,
-  title: "Spending",
-  amount: 15000,
-},
-{
-  id: 3,
-  title: "Remaining",
-  amount: 35000,
-}]
 
 function Dashboard() {
   const [showForm, setShowForm] = useState(false);
@@ -25,21 +10,31 @@ function Dashboard() {
     {
       id: 1,
       title: "Pizza",
-      amount: 500
+      amount: 500,
+      category: "Food",
+      type:"Expense"  
     },
     {
       id: 2,
       title: "Movie",
-      amount: 800
+      amount: 800,
+      category:"Entertainment",
+      type:"Expense"
     },
     {
       id: 3,
       title: "Salary",
-      amount: 25000
+      amount: 25000,
+      category:"Bills",
+      type:"Income"
     }
   ]);
   const [category, setCategory] = useState("");
   const [type, setType] = useState("Expense");
+  const totalIncome=transactions.filter(txn => txn.type === "Income").reduce((acc, txn) => acc + txn.amount, 0);
+  const totalExpense=transactions.filter(txn => txn.type === "Expense").reduce((acc, txn) => acc + txn.amount, 0);
+  const balance=totalIncome-totalExpense;
+
   function handleSave(){
     if(!title || !amount || !category || !type){
       alert("Please fill in all fields");
@@ -131,20 +126,29 @@ function Dashboard() {
         <div className="mt-6">
           <h2 className="text-2xl font-semibold mb-4">Summary</h2>
           <div className="flex gap-6 mt-4">
-            {summaryData.map(summary => (
+            
             <SummaryCard
-              key={summary.id}
-              title={summary.title}
-              amount={summary.amount}
+              title="Total Income"
+              amount={totalIncome}
+              variant="income"
             />
-          ))}
+            <SummaryCard
+              title="Total Expense"
+              amount={totalExpense}
+              variant="expense"
+            />
+            <SummaryCard
+              title="Balance"
+              amount={balance}
+              variant="balance"
+            />
           </div>
           
         </div>
         <div className="mt-8">
             <h2 className="text-2xl font-semibold mb-4">Recent Transactions</h2>
             {transactions.map(txn => (
-                <TransactionItem key={txn.id} title={txn.title} amount={txn.amount} />
+                <TransactionItem key={txn.id} title={txn.title} amount={txn.amount} category={txn.category} type={txn.type} />
             ))}
         </div>
     </div>
