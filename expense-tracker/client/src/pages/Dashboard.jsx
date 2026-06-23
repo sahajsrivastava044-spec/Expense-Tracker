@@ -34,7 +34,11 @@ function Dashboard() {
   const totalIncome=transactions.filter(txn => txn.type === "Income").reduce((acc, txn) => acc + txn.amount, 0);
   const totalExpense=transactions.filter(txn => txn.type === "Expense").reduce((acc, txn) => acc + txn.amount, 0);
   const balance=totalIncome-totalExpense;
-
+  function handNegative(){
+    if (balance < 0) {
+      alert("Your expenses exceed your income! Consider reviewing your budget.");
+    }
+  }
   function handleSave(){
     if(!title || !amount || !category || !type){
       alert("Please fill in all fields");
@@ -55,6 +59,7 @@ function Dashboard() {
     setShowForm(false);
   }
   return (
+    balance < 0 && handNegative(),
     <div className="p-8">
         <h1 className="text-3xl font-bold">Welcome, User!</h1>
         <button 

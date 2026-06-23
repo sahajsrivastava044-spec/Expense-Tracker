@@ -1,12 +1,25 @@
-import Dashboard from "./pages/Dashboard"
-import MainLayout from "./layouts/MainLayout"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import MainLayout from "./layouts/MainLayout";
+
+import Dashboard from "./pages/Dashboard";
+import Analytics from "./pages/Analytics";
+import Budgets from "./pages/Budgets";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
-      <MainLayout>
-        <Dashboard />
-      </MainLayout>
-  )
+    <BrowserRouter>
+      <Routes>
+        <Route element={<MainLayout />}>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/analytics" element={<Analytics />} />
+          <Route path="/budgets" element={<Budgets />} />
+          <Route path="/settings" element={<Settings />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;
