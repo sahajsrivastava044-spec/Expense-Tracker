@@ -1,65 +1,70 @@
 import SummaryCard from "../components/SummaryCard"
 import TransactionItem from "../components/TransactionItem";
-import {useState} from "react"; 
+import {useState,useEffect} from "react";
+import { getTransactions, createTransaction, deleteTransaction } from "../services/transactionService"; 
 
 function Dashboard() {
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState("");
   const [amount, setAmount] = useState("");
-  const [transactions,setTransactions] = useState([
-    {
-      id: 1,
-      title: "Pizza",
-      amount: 500,
-      category: "Food",
-      type:"Expense"  
-    },
-    {
-      id: 2,
-      title: "Movie",
-      amount: 800,
-      category:"Entertainment",
-      type:"Expense"
-    },
-    {
-      id: 3,
-      title: "Salary",
-      amount: 25000,
-      category:"Bills",
-      type:"Income"
+  const [transactions,setTransactions] = useState([]);
+
+  useEffect(()=>{
+    const fetchTransaction=async()=>{
+      try {
+        const data=await getTransactions();
+        setTransactions(data);
+      } catch (error) {
+        console.error("Error fetching transactions",error);
+      }
     }
-  ]);
+    fetchTransaction();
+  },[])
+
   const [category, setCategory] = useState("");
   const [type, setType] = useState("Expense");
   const totalIncome=transactions.filter(txn => txn.type === "Income").reduce((acc, txn) => acc + txn.amount, 0);
   const totalExpense=transactions.filter(txn => txn.type === "Expense").reduce((acc, txn) => acc + txn.amount, 0);
   const balance=totalIncome-totalExpense;
-  function handNegative(){
-    if (balance < 0) {
-      alert("Your expenses exceed your income! Consider reviewing your budget.");
+  useEffect(()=>{
+    if (balance<0){
+      alert("Your expense is more than your budget!");
     }
-  }
-  function handleSave(){
+  },[balance]);
+  async function handleSave(){
     if(!title || !amount || !category || !type){
       alert("Please fill in all fields");
       return;
     };
     const newTransaction = {
-      id: transactions.length+1,
       title,
       amount: parseFloat(amount),
       category,
       type
     }
-    setTransactions([...transactions, newTransaction]);
-    setTitle("");
-    setAmount("");
-    setCategory("");
-    setType("Expense");
-    setShowForm(false);
+    try {
+      const saveTransaction= await createTransaction(newTransaction);
+      setTransactions((prev)=>[...prev, saveTransaction]);
+      setTitle("");
+      setAmount("");
+      setCategory("");
+      setType("Expense");
+      setShowForm(false);
+    } catch (error) {
+      console.error("Error creating transaction:",error);
+      alert("Failed to save transaction");
+    }
+  }
+  const handleDelete=async(id)=>{
+    try {
+      await deleteTransaction(id);
+      setTransactions(prev=>prev.filter(txn=>txn._id !== id));
+    } catch (error) {
+      console.error("Error deleting transaction:",error);
+    }
   }
   return (
-    balance < 0 && handNegative(),
+    balance < 0,
     <div className="p-8">
         <h1 className="text-3xl font-bold">Welcome, User!</h1>
         <button 
@@ -153,7 +158,7 @@ function Dashboard() {
         <div className="mt-8">
             <h2 className="text-2xl font-semibold mb-4">Recent Transactions</h2>
             {transactions.map(txn => (
-                <TransactionItem key={txn.id} title={txn.title} amount={txn.amount} category={txn.category} type={txn.type} />
+                <TransactionItem key={txn._id} {...txn} onDelete={handleDelete}/>
             ))}
         </div>
     </div>
