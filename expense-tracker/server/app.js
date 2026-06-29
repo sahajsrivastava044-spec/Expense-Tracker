@@ -7,12 +7,7 @@ const authRoutes = require("./routes/authRoutes");
 const app=express();
 
 
-app.use(cors({
-    origin: [
-      "http://localhost:5173",
-      "https://expense-tracker-dsg2.vercel.app/",
-    ],
-  }));
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
