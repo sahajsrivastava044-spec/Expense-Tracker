@@ -83,7 +83,7 @@ function Budgets() {
           placeholder="Enter budget"
           value={budgetInput}
           onChange={(e) => setBudgetInput(e.target.value)}
-          className="border p-2 rounded w-full mb-4"
+          className="border border-gray-300 p-2.5 rounded-lg w-full mb-4 focus:ring-2 focus:ring-purple-500 outline-none transition-all"
         />
 
         <button

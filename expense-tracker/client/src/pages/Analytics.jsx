@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getTransactions } from "../services/transactionService";
-import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid} from "recharts";
+import { PieChart, Pie, Cell, Tooltip, Legend, BarChart, Bar, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from "recharts";
+import SummaryCard from "../components/SummaryCard";
 
 const Analytics = () => {
 const [transactions, setTransactions]=useState([]);
@@ -25,7 +26,9 @@ useEffect(()=>{
   fetchTransactions();
 },[])
 
-const categoryData=transactions.reduce((acc, txn)=>{
+const expenseTransactions = transactions.filter(txn => txn.type === "Expense");
+
+const categoryData=expenseTransactions.reduce((acc, txn)=>{
   const existingCategory = acc.find(
     item=>item.name===txn.category
   );
@@ -39,49 +42,75 @@ const categoryData=transactions.reduce((acc, txn)=>{
   }
 
   return acc;
-},[]);
+},[]).sort((a, b) => b.value - a.value);
+
+const topCategory = categoryData.length > 0 ? categoryData[0].name : "N/A";
 
   return (
     <div className="p-8">
-      <h1 className="text-3xl font-bold mb-6">Analytics</h1>
-      <div className="bg-gray-800 p-6 rounded-xl">
-        <PieChart width={500} height={300}>
-          <Pie
-            data={categoryData}
-            dataKey="value"
-            nameKey="name"
-            cx="50%"
-            cy="50%"
-            outerRadius={100}
-            label
-          >
-            {categoryData.map((entry, index)=>(
-              <Cell
-              key={index}
-              fill={[
-                "#0088FE",
-                "#00C49F",
-                "#FFBB28",
-                "#FF8042",
-                "#AF19FF",
-                "#fe0000",
-              ][index % 5]}
-              />
-            ))}
-          </Pie>
-          <Tooltip/>
-          <Legend/>
-        </PieChart>
+      <h1 className="text-3xl font-bold mb-6 text-gray-800">Analytics Overview</h1>
+      
+      <div className="flex gap-6 mb-8">
+        <SummaryCard title="Total Income" amount={totalIncome} variant="income" />
+        <SummaryCard title="Total Expense" amount={totalExpense} variant="expense" />
+        <SummaryCard title="Net Balance" amount={totalIncome - totalExpense} variant="balance" />
+        <div className={`bg-white border-l-4 rounded-xl p-6 shadow-sm flex-1 border-purple-500`}>
+          <h3 className="text-gray-500 text-sm uppercase tracking-wider font-semibold mb-1">Top Expense</h3>
+          <p className="text-3xl font-bold text-purple-700">{topCategory}</p>
+        </div>
       </div>
-      <div className="bg-gray-800 p-6 rounded-xl mt-8">
-        <BarChart width={500} height={300} data={barData}>
-            <CartesianGrid strokeDasharray="3 3"/>
-            <XAxis dataKey="name"/>
-            <YAxis/>
-            <Tooltip/>
-            <Legend/>
-            <Bar dataKey="amount" fill="#8884d8"/>
-        </BarChart>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">
+          <h2 className="text-xl font-semibold mb-6 text-gray-700">Expenses by Category</h2>
+          <div className="flex-1 min-h-[300px] flex items-center justify-center">
+            {categoryData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={100}
+                    label={({name, percent}) => percent ? `${name} ${(percent * 100).toFixed(0)}%` : name}
+                  >
+                    {categoryData.map((entry, index)=>(
+                      <Cell
+                      key={index}
+                      fill={["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#AF19FF", "#fe0000"][index % 6]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip formatter={(value) => `₹${value}`} />
+                  <Legend />
+                </PieChart>
+              </ResponsiveContainer>
+            ) : (
+              <p className="text-gray-500">No expense data available.</p>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex flex-col">
+          <h2 className="text-xl font-semibold mb-6 text-gray-700">Income vs Expense</h2>
+          <div className="flex-1 min-h-[300px]">
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={barData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false}/>
+                  <XAxis dataKey="name" axisLine={false} tickLine={false}/>
+                  <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `₹${value}`}/>
+                  <Tooltip cursor={{fill: 'transparent'}} formatter={(value) => `₹${value}`}/>
+                  <Bar dataKey="amount" fill="#8884d8" radius={[4, 4, 0, 0]}>
+                    {barData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.name === 'Income' ? '#16a34a' : '#dc2626'} />
+                    ))}
+                  </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
       </div>
     </div>
   )

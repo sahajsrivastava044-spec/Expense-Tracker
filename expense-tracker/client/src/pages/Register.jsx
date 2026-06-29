@@ -21,7 +21,7 @@ function Register(){
         }
     }
       return (
-            <div className="min-h-screen flex justify-center items-center">
+            <div className="min-h-screen flex justify-center items-center bg-gray-50">
             <form
                 onSubmit={handleSubmit}
                 className="bg-white p-8 rounded-lg shadow-md w-96"
@@ -37,7 +37,7 @@ function Register(){
                 onChange={(e) =>
                     setName(e.target.value)
                 }
-                className="border p-2 rounded w-full mb-4"
+                className="border border-gray-300 p-2.5 rounded-lg w-full mb-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                 />
 
                 <input
@@ -47,7 +47,7 @@ function Register(){
                 onChange={(e) =>
                     setEmail(e.target.value)
                 }
-                className="border p-2 rounded w-full mb-4"
+                className="border border-gray-300 p-2.5 rounded-lg w-full mb-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                 />
 
                 <input
@@ -57,11 +57,11 @@ function Register(){
                 onChange={(e) =>
                     setPassword(e.target.value)
                 }
-                className="border p-2 rounded w-full mb-4"
+                className="border border-gray-300 p-2.5 rounded-lg w-full mb-4 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
                 />
 
                 <button
-                className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2.5 rounded-lg w-full transition-colors"
                 >
                 Register
                 </button>

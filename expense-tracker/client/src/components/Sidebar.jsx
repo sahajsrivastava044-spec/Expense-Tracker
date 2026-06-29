@@ -18,13 +18,13 @@ function Sidebar() {
          <div  className="w-64 bg-gray-800 text-white min-h-screen p-6 flex flex-col">
             <h1 className="text-2xl font-bold mb-8">Expense Tracker</h1>
             <p className="text-gray-400 mb-8">Logged in as {user?.name}</p>
-            <ul className="space-y-4">
+            <ul className="space-y-2">
                 {links.map((link)=>(
                     <NavLink 
                         key={link.path}
                         to={link.path}
-                        className={({isActive})=>`block p-2 rounded transistion-colors ${
-                            isActive?"bg-blue-600":"hover:bg-gray-700"}`}
+                        className={({isActive})=>`block px-4 py-3 rounded-lg transition-all duration-300 ${
+                            isActive?"bg-blue-600 text-white shadow-md":"text-gray-300 hover:bg-gray-700 hover:text-white"}`}
                     >
                         {link.name}
                     </NavLink>

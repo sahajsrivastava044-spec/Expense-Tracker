@@ -127,33 +127,32 @@ function Dashboard() {
 
   const budgetPercentage=budget>0 ? Math.min((totalExpense/budget)*100,100):0;
   return (
-    <div className="p-8">
-        <h1 className="text-3xl font-bold">Welcome, User!</h1>
+    <div className="">
         <button 
         onClick={() => setShowForm(true)} 
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          + Add Expense
+        className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 px-6 rounded-lg shadow-sm transition-colors mb-4">
+          + Add Transaction
         </button>
         {showForm && (
-          <div className="mt-4 p-4 border rounded">
-            <h3>Add New Expense/Income</h3>
+          <div className="mb-6 p-6 bg-white border border-gray-100 rounded-xl shadow-sm">
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">Add New Transaction</h3>
             
             <input type="text" 
             placeholder="Title"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border rounded p-2 w-full mb-3"/>
+            className="border border-gray-300 rounded-lg p-2.5 w-full mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"/>
             
             <input type="number" 
             placeholder="Amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            className="border rounded p-2 w-full mb-3"/>
+            className="border border-gray-300 rounded-lg p-2.5 w-full mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"/>
 
             <select 
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="border rounded p-2 w-full mb-3">
+            className="border border-gray-300 rounded-lg p-2.5 w-full mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all bg-white">
               <option value="">Select Category</option>
               <option value="Food">Food</option>
               <option value="Travel">Travel</option>
@@ -191,22 +190,24 @@ function Dashboard() {
               </div>
             </div>
 
-            <button onClick={handleSave} className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-              Save Expense
-            </button>
+            <div className="flex gap-4 mt-2">
+              <button onClick={handleSave} className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
+                Save Transaction
+              </button>
 
-            <button
-              onClick={()=>setShowBudgetForm(true)}
-              className="ml-4 bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
-              >
-              Set Budget
-            </button>
+              <button
+                onClick={()=>setShowBudgetForm(true)}
+                className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+                >
+                Set Budget
+              </button>
+            </div>
           </div>
         )}
 
         {showBudgetForm && (
-          <div className="mt-4 p-4 border rounded">
-            <h3 className="mb-3 font-semibold">
+          <div className="mb-6 p-6 bg-white border border-gray-100 rounded-xl shadow-sm">
+            <h3 className="text-lg font-semibold mb-4 text-gray-800">
               Set Monthly Budget
             </h3>
 
@@ -217,12 +218,12 @@ function Dashboard() {
             onChange={(e)=>setBudgetInput(e.target.value)
 
             }
-            className="border rounded p-2 w-full mb-3"
+            className="border border-gray-300 rounded-lg p-2.5 w-full mb-4 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition-all"
             />
 
             <button
               onClick={handleBudgetSave}
-              className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded"
+              className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
             >
               Save Budget
             </button>
@@ -275,14 +276,17 @@ function Dashboard() {
         </div>
         
 
-        <div className="mt-6">
-          <h3 className="font-semibold mb-2">
-            Budget Usage: {budgetPercentage.toFixed(1)}%
-          </h3>
+        <div className="mt-8 bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-semibold text-gray-800">
+              Budget Usage
+            </h3>
+            <span className="font-bold text-gray-600">{budgetPercentage.toFixed(1)}%</span>
+          </div>
 
-          <div className="w-full bg-gray-300 rounded-full h-6">
+          <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
             <div
-              className={`h-6 rounded-full ${
+              className={`h-4 rounded-full transition-all duration-500 ease-out ${
                 budgetPercentage < 80
                   ? "bg-green-500"
                   : budgetPercentage < 100

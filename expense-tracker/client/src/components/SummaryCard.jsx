@@ -1,14 +1,14 @@
 
 function SummaryCard({ title, amount, variant }) {
   const variants={
-    income: "bg-green-600 text-white",
-    expense: "bg-red-600 text-white",
-    balance: "bg-blue-600 text-white" 
+    income: "border-green-500",
+    expense: "border-red-500",
+    balance: "border-blue-500" 
    }
   return (
-    <div className={`border rounded-xl p-6 shadow-md flex-1 ${variants[variant] || ''}`}>
-        <h3 className="text-gray-500 text-sm text-white">{title}</h3>
-        <p className="text-2xl font-bold mt-2 text-white">₹{amount}</p>
+    <div className={`bg-white border-l-4 rounded-xl p-6 shadow-sm flex-1 ${variants[variant] || 'border-gray-200'}`}>
+        <h3 className="text-gray-500 text-sm uppercase tracking-wider font-semibold mb-1">{title}</h3>
+        <p className={`text-3xl font-bold ${variant === 'expense' ? 'text-red-600' : variant === 'income' ? 'text-green-600' : 'text-blue-700'}`}>₹{amount}</p>
     </div>
   )
 }
