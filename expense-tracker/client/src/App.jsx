@@ -6,12 +6,17 @@ import Dashboard from "./pages/Dashboard";
 import Analytics from "./pages/Analytics";
 import Budgets from "./pages/Budgets";
 import Settings from "./pages/Settings";
+import ProtectedRoute from "./components/ProtectedRoutes";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route element={<MainLayout />}>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route element={<ProtectedRoute><MainLayout /></ProtectedRoute>}>
           <Route path="/" element={<Dashboard />} />
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/budgets" element={<Budgets />} />

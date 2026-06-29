@@ -1,5 +1,6 @@
 import Sidebar from "../components/Sidebar";
 import {Outlet} from "react-router-dom";
+import WelcomeBanner from "../components/WelcomeBanner";
 
 function MainLayout() {
   return (
@@ -7,6 +8,7 @@ function MainLayout() {
       <Sidebar />
 
       <div className="flex-1 p-8">
+        <WelcomeBanner/>
         <Outlet/>
       </div>
     </div>

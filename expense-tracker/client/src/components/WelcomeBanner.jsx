@@ -1,0 +1,47 @@
+function WelcomeBanner() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const hour = new Date().getHours();
+
+  let greeting="";
+
+  if (hour < 12) {
+    greeting = "Good Morning";
+  } else if (hour < 18) {
+    greeting = "Good Afternoon";
+  } else {
+    greeting = "Good Evening";
+  }
+
+  const messages = [
+    "Every rupee tracked is a step toward financial freedom.",
+    "Small savings today create big opportunities tomorrow.",
+    "Your money deserves a smart manager — that's you.",
+    "Stay consistent. Great finances are built one transaction at a time.",
+    "Track wisely, spend mindfully, and grow confidently.",
+    "Keep tracking. Wealth is built through consistency.",
+    "Your future self will thank you for tracking today.",
+    "Financial discipline beats financial stress.",
+    "One smart decision at a time, you're building financial freedom.",
+    "Every expense tells a story. Make yours meaningful.",
+    "Budgeting isn't restriction — it's empowerment.",
+    "You're in control of your money journey.",
+  ];
+
+  const randomMessage =
+    messages[new Date().getDate() % messages.length];
+
+  return (
+    <div className="bg-white shadow rounded-lg p-6 mb-6">
+      <h1 className="text-3xl font-bold text-gray-800">
+        {greeting}, {user?.name || "User"}! 👋
+      </h1>
+
+      <p className="text-gray-600 mt-2 italic">
+        {randomMessage}
+      </p>
+    </div>
+  );
+}
+
+export default WelcomeBanner;

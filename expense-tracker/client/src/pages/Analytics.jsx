@@ -64,6 +64,7 @@ const categoryData=transactions.reduce((acc, txn)=>{
                 "#FFBB28",
                 "#FF8042",
                 "#AF19FF",
+                "#fe0000",
               ][index % 5]}
               />
             ))}

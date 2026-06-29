@@ -24,6 +24,7 @@ const transactionSchema = new mongoose.Schema(
         "Bills",
         "Entertainment",
         "Job",
+        "Income"
       ],
     },
 
