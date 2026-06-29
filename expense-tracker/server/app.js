@@ -12,7 +12,6 @@ app.use(cors({
       "http://localhost:5173",
       "https://expense-tracker-dsg2.vercel.app/",
     ],
-    credentials: true,
   }));
 app.use(express.json());
 app.use(cookieParser());
