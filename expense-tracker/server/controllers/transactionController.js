@@ -2,7 +2,14 @@ const Transaction = require("../models/Transaction");
 
 const createTransaction = async (req, res) => {
   try {
-    const transaction = await Transaction.create(req.body);
+    const {title,amount,category,type}=req.body;
+    const transaction = await Transaction.create({
+      title,
+      amount,
+      category,
+      type,
+      user: req.user,
+    });
 
     res.status(201).json({
       success: true,
@@ -18,7 +25,7 @@ const createTransaction = async (req, res) => {
 
 const getTransactions = async (req, res) => {
   try {
-    const transactions = await Transaction.find();
+    const transactions = await Transaction.find({user:req.user});
 
     res.status(200).json({
       success: true,
@@ -35,9 +42,10 @@ const getTransactions = async (req, res) => {
 
 const deleteTransaction = async (req, res) => {
   try {
-    const transaction = await Transaction.findByIdAndDelete(
-      req.params.id
-    );
+    const transaction = await Transaction.findByIdAndDelete({
+      _id: req.params.id,
+      user:req.user
+  });
 
     if (!transaction) {
       return res.status(404).json({

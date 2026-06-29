@@ -2,6 +2,8 @@ const express=require('express');
 const cors=require('cors');
 const cookieParser=require('cookie-parser');
 const transactionRoutes=require("./routes/transactionRoutes")
+const budgetRoutes = require("./routes/budgetRoutes");
+const authRoutes = require("./routes/authRoutes");
 const app=express();
 
 
@@ -15,4 +17,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/transactions", transactionRoutes);
 
+app.use("/api/budgets", budgetRoutes);
+
+app.use("/api/auth", authRoutes);
 module.exports=app;
