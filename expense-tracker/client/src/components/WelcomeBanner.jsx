@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useEffect } from "react";
+
 function WelcomeBanner() {
   const user = JSON.parse(localStorage.getItem("user"));
 
@@ -28,9 +31,15 @@ function WelcomeBanner() {
     "You're in control of your money journey.",
   ];
 
-  const randomMessage =
-    messages[new Date().getDate() % messages.length];
+  const [randomMessage,setRandomMessage] = useState(messages[new Date().getDate() % messages.length]);
 
+  useEffect(()=>{
+    const interval = setInterval(()=>{
+        const newMessage = messages[Math.floor(Math.random()*messages.length)];
+        setRandomMessage(newMessage);
+    },10000);
+    return ()=>clearInterval(interval);
+  },[])
   return (
     <div className="bg-white shadow rounded-lg p-6 mb-6">
       <h1 className="text-3xl font-bold text-gray-800">
